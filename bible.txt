@@ -1,0 +1,137 @@
+						Assignment No 1.
+						   Sahil Jain
+
+
+Input to mapper:
+
+doc1:crazy fox jumped and ran
+doc1:crazy fox ran fast
+doc2:fox ran very fast and ran
+doc2:fox jumped and sat
+doc3:crazy fox ran and ran
+doc3:fox ran
+
+Mapper {
+
+Map(Doc-ID,Sentence) {
+
+	for each unnique Doc-ID emit("total number of all documents",1);
+
+	String[] tokens=Sentence.split(" ");
+
+	for(int i=0;i<tokens.length()-1;i++){
+		emit("("+tokens[i]+", "+tokens[i+1]+")",1);
+	}
+}
+
+}
+
+output from mapper
+
+total number of all documents,1
+(crazy,fox),1
+(fox,jumped),1
+(jumped,and),1 
+(and,ran),1
+
+
+(crazy,fox),1
+(fox,ran),1
+(ran,fast),1
+
+total number of all documents,1
+(fox,ran),1
+(ran,very),1
+(very,fast),1
+(fast,and),1
+(and,ran),1
+
+
+(fox,jumped),1
+(jumped,and),1
+(and,sat),1
+
+total number of all documents,1
+(crazy,fox),1
+(fox,ran),1
+(ran,and),1
+(and,ran),1
+
+
+(fox,ran),1
+
+
+input to sort and shuffle is output from mapper
+
+
+output from sort and shuffle:
+
+(crazy,fox),[1,1,1]
+
+(fox,jumped),[1,1]
+
+(jumped,and),[1,1]
+
+(and,ran),[1,1,1]
+
+(fox,ran),[1,1,1,1]
+
+total number of all documents,[1,1,1]
+
+(ran,fast),[1]
+
+(ran,very),[1]
+
+(very,fast),[1]
+
+(fast,and),[1]
+
+(and,sat),[1]
+
+(ran,and),[1]
+
+
+
+input to reduce is output from sort and shuffle
+
+
+
+Reduce(2-gram,iterable_count){
+
+	int sum=0;
+	for(int n:iterable_count){
+		sum=sum+n;
+	emit(2-gram,sum);
+
+}
+
+
+output from reducer
+
+
+(crazy,fox),3
+
+(fox,jumped),2
+
+(jumped,and),2
+
+(and,ran),3
+
+(fox,ran),4
+
+(ran,fast),1
+
+(ran,very),1
+
+(very,fast),1
+
+total number of all documents,3
+
+(fast,and),1
+
+(and,sat),1
+
+(ran,and),1
+
+
+

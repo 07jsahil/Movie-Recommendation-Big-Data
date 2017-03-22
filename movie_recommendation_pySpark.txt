@@ -1,0 +1,31 @@
+
+#reads input from file
+input=sc.textFile("/home/sajain/Downloads/a3.txt") 
+
+#filterrec2 is a python function that filters out invalid data 
+finput=input.map(lambda x:filterrec2(x))
+
+#filters out 0, which is returned by the filterrec function when x is invalid
+fi=finput.filter(lambda x:x!=0)
+
+#mapping into (m,(u,1)). Then reduceByKey to get (m,l<u>,n)
+f2=fi.map(lambda x:(x[0],(x[1],1))).reduceByKey(lambda x,y:(x[0]+','+y[0],x[1]+y[1]))
+
+#f2 cartesian with f2, then map fun1 is a python function to filter out all repeated and invalid pairs in the Cartesian product, 
+#then filter 0 as for all invalid repeated pairs fun1 will return 0
+f4=f2.cartesian(f2).map(lambda x:fun1(x)).filter(lambda x:x!=0)
+
+#mapping so as to get ((m1,m2),(cn,n1+n2))
+# cn is the common no of users rated movie m1,m2
+# n1, n2 is the total no of users rated movie m1 and m2 respectively
+#fun3 is a python function which takes a list of users for m1,m2 and returns the cn
+f7=f4.map(lambda x:((x[0][0],x[1][0]),(fun3(x[0][1][0],x[1][1][0]),x[0][1][1]+x[1][1][1])))
+
+#jacqsim is a python function to compute the jacquard similarity.
+f8=f7.map(lambda x:(x[0][0],x[0][1],jacqsim(x[1][0],x[1][1])))
+
+#taking the top 100 of the movie recommendations as per the similarity rating.
+f8.takeOrdered(100,lambda x:-x[2])
+
+
+

@@ -1,0 +1,59 @@
+#filterrec2 is a python function that filters out invalid data 
+#!usr/bin/python
+import re
+regx=r"(^\d+\t\d+\t\d+\t\d+$)"
+def filterrec2(x):
+	mylist=[]
+	temp=[]
+	temp1=[]
+	if re.match(regx,x):
+		r0=x.split()[0]
+		r1=x.split()[1]
+		if(int(x.split()[2])<=5):
+			if(int(x.split()[2])>=1):
+				r2=x.split()[2]
+			else:
+				return(0)
+		else:
+			return(0)
+		return (r1,r0)
+	else:
+		return(0)
+
+#jacqsim is a python function to compute the jacquard similarity.		
+#!usr/bin/python
+def jacqsim(x,y):
+	x=float(x)
+	y=float(y)
+	if x==0 :
+		return 0
+	else:
+		z=y-x
+		return(round(float(x/z),2))
+	
+
+#fun3 is a python function which takes a list of users for m1,m2 and returns the cn
+#!usr/bin/python
+def fun3(x,y):
+	x0=list(x.split(","))
+	x1=list(y.split(","))
+	v=list(val for val in x0 if val in x1)
+	return(len(v))
+	
+
+#fun1 is a python function to filter out all repeated and invalid pairs in the Cartesian product, 
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+
+def fun1(x):
+    r0 = int(x[0][0])
+    r1 = int(x[1][0])
+    if r1 == r0:
+        return 0
+    elif r1 < r0:
+        return 0
+    else:
+        return x	
+
+
